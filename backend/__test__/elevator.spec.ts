@@ -1,4 +1,4 @@
-import {getRandomFloors} from '../src/utils'
+import { getRandomFloors } from '../src/utils';
 
 describe('check elevator functions', () => {
 
