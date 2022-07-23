@@ -1,5 +1,5 @@
 function App() {
-  return (<p>
+  return (<p className="text-blue-800">
     Hello World!
   </p>
   );
