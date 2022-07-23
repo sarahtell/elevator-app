@@ -14,7 +14,7 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
     <div className="relative flex flex-col w-1/5 bg-cyan-400 items-center justify-evenly">
       {[...Array(NUMBER_OF_FLOORS)].map((floor) => {
         return (
-        // Using "style" instead of tailwind to enable dynamic css
+          // Using "style" instead of tailwind to enable dynamic css
           <li
             key={floor}
             style={{
@@ -26,6 +26,15 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
           />
         );
       })}
+      <li
+        style={{
+          height: `${ELEVATOR_HEIGHT}%`,
+          width: `${ELEVATOR_WIDTH}%`,
+          listStyle: "none",
+          backgroundColor: "green",
+          position: "absolute",
+        }}
+      />
     </div>
   );
 }
