@@ -13,5 +13,10 @@ app.listen(port, () => {
 
 app.get('/elevators', (req, res) => {
     const randomFloors = getRandomFloors(5, 20)
-    res.send({initialLocations: randomFloors})
+    const elevatorLocations = randomFloors.map(floor => {
+
+        return {floorFrom: floor, floorTo: floor}
+
+    })
+    res.send({locations: elevatorLocations})
   })
