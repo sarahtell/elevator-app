@@ -6,7 +6,6 @@ describe('check elevator functions', () => {
         const floors = 20
         const elevators = 5
         const randomFloors = getRandomFloors(elevators, floors)
-        console.log(randomFloors)
         expect(randomFloors.length).toBe(5)
     })
 })
