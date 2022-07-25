@@ -14,7 +14,7 @@ const DISTANCE_BETWEEN_FLOORS =
   (100 - NUMBER_OF_FLOORS * ELEVATOR_HEIGHT) / (NUMBER_OF_FLOORS + 1);
 
 function calculateFloorPositionInPercentage(floor: number) {
-  const floorsFromTop = NUMBER_OF_FLOORS - floor;
+  const floorsFromTop = (NUMBER_OF_FLOORS - floor - 1);
   return (
     floorsFromTop * (ELEVATOR_HEIGHT + DISTANCE_BETWEEN_FLOORS) +
     DISTANCE_BETWEEN_FLOORS
@@ -24,11 +24,11 @@ function calculateFloorPositionInPercentage(floor: number) {
 export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
   return (
     <div className="relative flex flex-col w-1/5 bg-cyan-400 items-center justify-evenly">
-      {[...Array(NUMBER_OF_FLOORS)].map((floor) => {
+      {[...Array(NUMBER_OF_FLOORS)].map((_, i) => {
         return (
           // Using "style" instead of tailwind to enable dynamic css
           <li
-            key={floor}
+            key={i}
             style={{
               height: `${ELEVATOR_HEIGHT}%`,
               width: `${ELEVATOR_WIDTH}%`,
@@ -41,6 +41,7 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
       <motion.li
         initial={{ top: `${calculateFloorPositionInPercentage(props.floorFrom)}%`}}
         animate={{top: `${calculateFloorPositionInPercentage(props.floorTo)}%`}}
+        transition={{duration: 5}}
         style={{
           height: `${ELEVATOR_HEIGHT}%`,
           width: `${ELEVATOR_WIDTH}%`,
