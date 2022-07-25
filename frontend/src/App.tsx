@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import ElevatorShaft from "./components/ElevatorShaft";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import FloorButtons from "./components/FloorButtons";
 import cloneDeep from "lodash/cloneDeep";
 
 type Shaft = {
   from: number;
   to: number;
-  elevatorIsMoving: boolean;
 };
 
 type ElevatorState = {
@@ -17,22 +16,37 @@ type ElevatorState = {
 
 const ELEVATOR_API_BASE_URL = "http://localhost:4000";
 
-async function getElevatorData() {
+async function getInitialElevatorData() {
   try {
-    const response = await axios.get(`${ELEVATOR_API_BASE_URL}/elevators`);
-    return response;
+    return await axios.get(`${ELEVATOR_API_BASE_URL}/elevators`);
   } catch {
     throw new Error("Could not fetch elevator data!");
   }
 }
 
+async function requestElevator(
+  buttonClickFloor: number,
+  shafts: Shaft[]
+): Promise<AxiosResponse<number, any>> {
+  try {
+    return await axios.post(`${ELEVATOR_API_BASE_URL}/callElevator`, {
+      data: { buttonClickFloor, shafts },
+    });
+  } catch {
+    throw new Error("Could not request elevator!");
+  }
+}
+
 function App() {
-  const [elevatorState, setElevatorState] = useState<ElevatorState>();
+  const [elevatorState, setElevatorState] = useState<ElevatorState>({
+    shafts: [],
+    buttonsClicked: new Array(20).fill(false),
+  });
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getElevatorData().then((res) => {
-      setElevatorState(res.data);
+    getInitialElevatorData().then((res) => {
+      setElevatorState({ ...elevatorState, shafts: res.data.shafts });
     });
     setLoading(false);
   }, []);
@@ -45,13 +59,13 @@ function App() {
       throw new Error("State is undefined!");
     }
 
-    nextState.buttonsClicked[floor] = false
+    nextState.buttonsClicked[floor] = false;
 
     nextState.shafts[shaft].from = floor;
     setElevatorState(nextState);
   }
 
-  function callElevatorToFloor(floor: number) {
+  async function callElevatorToFloor(buttonClickFloor: number) {
     const nextState = cloneDeep(elevatorState);
 
     if (!nextState) {
@@ -59,10 +73,14 @@ function App() {
     }
 
     // TODO: Make request to api and find out which elevator that should respond.
+    const response = await requestElevator(buttonClickFloor, nextState.shafts);
 
-    nextState.buttonsClicked[floor] = true
+    const closestShaft = response.data;
 
-    nextState.shafts[0].to = floor;
+    console.log(closestShaft);
+    nextState.buttonsClicked[buttonClickFloor] = true;
+
+    nextState.shafts[closestShaft].to = buttonClickFloor;
     setElevatorState(nextState);
   }
 
@@ -72,7 +90,10 @@ function App() {
 
   return (
     <div className="flex h-screen w-full bg-gradient-to-b from-pink-200 to-teal-100">
-      <FloorButtons callElevatorToFloor={callElevatorToFloor} buttonsClicked={elevatorState?.buttonsClicked || []}/>
+      <FloorButtons
+        callElevatorToFloor={callElevatorToFloor}
+        buttonsClicked={elevatorState?.buttonsClicked || []}
+      />
       {elevatorState?.shafts.map((shaft, i) => {
         return (
           <ElevatorShaft
