@@ -6,6 +6,7 @@ type ElevatorShaftProps = {
 };
 
 const NUMBER_OF_FLOORS = 20;
+const TIME_PER_FLOOR = 2 // Seconds
 
 // In percentage of parent element
 const ELEVATOR_HEIGHT = 4;
@@ -14,11 +15,16 @@ const DISTANCE_BETWEEN_FLOORS =
   (100 - NUMBER_OF_FLOORS * ELEVATOR_HEIGHT) / (NUMBER_OF_FLOORS + 1);
 
 function calculateFloorPositionInPercentage(floor: number) {
-  const floorsFromTop = (NUMBER_OF_FLOORS - floor - 1);
+  const floorsFromTop = NUMBER_OF_FLOORS - floor - 1;
   return (
     floorsFromTop * (ELEVATOR_HEIGHT + DISTANCE_BETWEEN_FLOORS) +
     DISTANCE_BETWEEN_FLOORS
   );
+}
+
+function calculateDuration(floorFrom: number, floorTo: number) {
+ console.log(`Floor from ${floorFrom}`, `Floor to ${floorTo}`,Math.abs(floorFrom - floorTo) * TIME_PER_FLOOR )
+  return Math.abs(floorFrom - floorTo) * TIME_PER_FLOOR;
 }
 
 export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
@@ -39,9 +45,15 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
         );
       })}
       <motion.li
-        initial={{ top: `${calculateFloorPositionInPercentage(props.floorFrom)}%`}}
-        animate={{top: `${calculateFloorPositionInPercentage(props.floorTo)}%`}}
-        transition={{duration: 5}}
+        initial={{
+          top: `${calculateFloorPositionInPercentage(props.floorFrom)}%`,
+        }}
+        animate={{
+          top: `${calculateFloorPositionInPercentage(props.floorTo)}%`,
+        }}
+        transition={{
+          duration: calculateDuration(props.floorFrom, props.floorTo),
+        }}
         style={{
           height: `${ELEVATOR_HEIGHT}%`,
           width: `${ELEVATOR_WIDTH}%`,
@@ -49,6 +61,7 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
           backgroundColor: "green",
           position: "absolute",
         }}
+        onAnimationComplete={() => console.log("TODO: Should update floorFrom...")}
       />
     </div>
   );
