@@ -5,7 +5,6 @@ import cors from "cors";
 const app = express();
 const port = process.env.PORT;
 
-
 app.use(cors());
 
 app.listen(port, () => {
@@ -17,5 +16,5 @@ app.get("/elevators", (req, res) => {
   const shafts = randomFloors.map((floor) => {
     return { from: floor, to: floor, elevatorIsMoving: false };
   });
-  res.send({ shafts: shafts });
+  res.send({ shafts: shafts, buttonsClicked: new Array(20).fill(false) });
 });

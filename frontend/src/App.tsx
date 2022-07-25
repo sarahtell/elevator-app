@@ -12,6 +12,7 @@ type Shaft = {
 
 type ElevatorState = {
   shafts: Shaft[];
+  buttonsClicked: boolean[];
 };
 
 const ELEVATOR_API_BASE_URL = "http://localhost:4000";
@@ -44,6 +45,8 @@ function App() {
       throw new Error("State is undefined!");
     }
 
+    nextState.buttonsClicked[floor] = false
+
     nextState.shafts[shaft].from = floor;
     setElevatorState(nextState);
   }
@@ -57,6 +60,8 @@ function App() {
 
     // TODO: Make request to api and find out which elevator that should respond.
 
+    nextState.buttonsClicked[floor] = true
+
     nextState.shafts[0].to = floor;
     setElevatorState(nextState);
   }
@@ -67,7 +72,7 @@ function App() {
 
   return (
     <div className="flex h-screen w-full bg-gradient-to-b from-pink-200 to-teal-100">
-      <FloorButtons callElevatorToFloor={callElevatorToFloor} />
+      <FloorButtons callElevatorToFloor={callElevatorToFloor} buttonsClicked={elevatorState?.buttonsClicked || []}/>
       {elevatorState?.shafts.map((shaft, i) => {
         return (
           <ElevatorShaft
