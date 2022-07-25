@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 
 type ElevatorShaftProps = {
-  floorFrom: number;
-  floorTo: number;
+  from: number;
+  to: number;
+  shaftIndex: number;
+  elevatorIsDone: (shaft: number, floor: number) => void;
 };
 
 const NUMBER_OF_FLOORS = 20;
@@ -46,13 +48,13 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
       })}
       <motion.li
         initial={{
-          top: `${calculateFloorPositionInPercentage(props.floorFrom)}%`,
+          top: `${calculateFloorPositionInPercentage(props.from)}%`,
         }}
         animate={{
-          top: `${calculateFloorPositionInPercentage(props.floorTo)}%`,
+          top: `${calculateFloorPositionInPercentage(props.to)}%`,
         }}
         transition={{
-          duration: calculateDuration(props.floorFrom, props.floorTo),
+          duration: calculateDuration(props.from, props.to),
         }}
         style={{
           height: `${ELEVATOR_HEIGHT}%`,
@@ -61,7 +63,7 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
           backgroundColor: "green",
           position: "absolute",
         }}
-        onAnimationComplete={() => console.log("TODO: Should update floorFrom...")}
+        onAnimationComplete={() => props.elevatorIsDone(props.shaftIndex, props.to)}
       />
     </div>
   );

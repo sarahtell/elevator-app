@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import ElevatorShaft from "./components/ElevatorShaft";
 import axios from "axios";
 import FloorButtons from "./components/FloorButtons";
-import cloneDeep from "lodash/cloneDeep"
+import cloneDeep from "lodash/cloneDeep";
 
-type ElevatorData = {
-  locations: {floorFrom: number, floorTo: number}[];
+type Shaft = {
+  from: number;
+  to: number;
+  elevatorIsMoving: boolean;
+};
+
+type ElevatorState = {
+  shafts: Shaft[];
 };
 
 const ELEVATOR_API_BASE_URL = "http://localhost:4000";
@@ -20,43 +26,58 @@ async function getElevatorData() {
 }
 
 function App() {
-  const [elevatorData, setElevatorData] = useState<ElevatorData>();
+  const [elevatorState, setElevatorState] = useState<ElevatorState>();
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getElevatorData().then((res) => {
-      setElevatorData(res.data);
-      console.log("hej ")
+      setElevatorState(res.data);
     });
-    setLoading(false)
+    setLoading(false);
   }, []);
 
-  function elevatorIsDone(shaft: number, floorTo: number) {
+  function elevatorIsDone(shaft: number, floor: number) {
     // TODO: update state when an elevator has reached its destination.
-  } 
+    const nextState = cloneDeep(elevatorState);
+
+    if (!nextState) {
+      throw new Error("State is undefined!");
+    }
+
+    nextState.shafts[shaft].from = floor;
+    setElevatorState(nextState);
+  }
 
   function callElevatorToFloor(floor: number) {
-    const nextState = cloneDeep(elevatorData)
+    const nextState = cloneDeep(elevatorState);
 
-    if(!nextState) {
-      throw new Error('Locations can not be empty!')
+    if (!nextState) {
+      throw new Error("State is undefined!");
     }
 
     // TODO: Make request to api and find out which elevator that should respond.
 
-    nextState.locations[0].floorTo = floor
-    setElevatorData(nextState)
+    nextState.shafts[0].to = floor;
+    setElevatorState(nextState);
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <p>Loading...</p>;
   }
 
   return (
     <div className="flex h-screen w-full bg-gradient-to-b from-pink-200 to-teal-100">
-      <FloorButtons callElevatorToFloor={callElevatorToFloor}/>
-      {elevatorData?.locations?.map((floor, i) => {
-        return <ElevatorShaft key={i} floorFrom={floor.floorFrom} floorTo={floor.floorTo}/>;
+      <FloorButtons callElevatorToFloor={callElevatorToFloor} />
+      {elevatorState?.shafts.map((shaft, i) => {
+        return (
+          <ElevatorShaft
+            key={i}
+            shaftIndex={i}
+            from={shaft.from}
+            to={shaft.to}
+            elevatorIsDone={elevatorIsDone}
+          />
+        );
       })}
     </div>
   );
