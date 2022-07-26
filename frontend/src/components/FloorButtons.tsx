@@ -30,6 +30,7 @@ export default function FloorButtons(props: FloorButtonsProps): JSX.Element {
               ) && props.callElevatorToFloor(NUMBER_OF_FLOORS - i - 1);
             }}
             key={i}
+            disabled={props.buttonsClicked[NUMBER_OF_FLOORS - i - 1]}
             style={{height: `${ELEVATOR_HEIGHT*0.5}%`}}
             className={`rounded-full active:bg-slate-500 active:border-green-500 active:border-4 aspect-square ${
               props.buttonsClicked[NUMBER_OF_FLOORS - i - 1]

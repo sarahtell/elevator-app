@@ -80,7 +80,6 @@ function App() {
       throw new Error("State is undefined!");
     }
 
-    // TODO: Make request to api and find out which elevator that should respond.
     const response = await requestElevator(buttonClickFloor, nextState.shafts);
 
     const closestShaft = response.data;
