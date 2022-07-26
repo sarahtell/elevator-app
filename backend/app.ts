@@ -20,5 +20,11 @@ app.get("/elevators", (req, res) => {
 app.post("/callElevator", express.json(), (req, res) => {
   const buttonClickFloor = req.body.data.buttonClickFloor;
   elevatorManager.updateShaft(req.body.data.shafts);
-  res.json(elevatorManager.getClosestElevator(buttonClickFloor));
+  res.json(elevatorManager.getClosestValidElevator(buttonClickFloor));
 });
+
+app.post("/updateElevator", express.json(), (req, res) => {
+    const buttonClickFloor = req.body.data.buttonClickFloor;
+    elevatorManager.updateShaft(req.body.data.shafts);
+    res.json(elevatorManager.getClosestValidElevator(buttonClickFloor));
+  });

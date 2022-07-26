@@ -8,7 +8,7 @@ type ElevatorShaftProps = {
 };
 
 const NUMBER_OF_FLOORS = 20;
-const TIME_PER_FLOOR = 2 // Seconds
+const TIME_PER_FLOOR = 0.5 // Seconds
 
 // In percentage of parent element
 const ELEVATOR_HEIGHT = 4;
@@ -55,6 +55,7 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
         }}
         transition={{
           duration: calculateDuration(props.from, props.to),
+          ease: 'linear'
         }}
         style={{
           height: `${ELEVATOR_HEIGHT}%`,
