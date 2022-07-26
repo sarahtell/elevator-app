@@ -33,7 +33,7 @@ export default class ElevatorManager {
 
     const sortedDistances = distances.sort((a, b) => a.distance - b.distance);
 
-    const closestShaft = sortedDistances.find(shaft => checkIfElevatorIsValid(this.shafts[shaft.shaftIndex], buttonClickFloor))
+    const closestShaft = sortedDistances.find(shaft => checkIfElevatorIsValid(this.shafts[shaft.shaftIndex]))
 
     // TODO: What happens if no elevator is valid? :) 
     return closestShaft.shaftIndex;

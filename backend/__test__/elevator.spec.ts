@@ -38,31 +38,20 @@ describe("check elevator functions", () => {
     expect(closestShaft).toBe(1);
   });
 
-  it("returns true if elevator is moving towards the same floor as the button click floor", () => {
-    const buttonClickFloor = 7
+  it("returns false if elevator in shaft is moving", () => {
     const shaft = {
         from: 6,
         to: 8,
       }
-    expect(checkIfElevatorIsValid(shaft, buttonClickFloor)).toEqual(true);
+    expect(checkIfElevatorIsValid(shaft)).toEqual(false);
   });
 
-  it("returns false if elevator is moving towards the same floor as the button click floor", () => {
-    const buttonClickFloor = 7
+  it("returns true if elevator in shaft is standing still", () => {
     const shaft = {
         from: 9,
-        to: 10,
+        to: 9,
       }
-    expect(checkIfElevatorIsValid(shaft, buttonClickFloor)).toEqual(false);
-  });
-
-  it("returns true if elevator is standing still.", () => {
-    const buttonClickFloor = 7
-    const shaft = {
-        from: 8,
-        to: 8,
-      }
-    expect(checkIfElevatorIsValid(shaft, buttonClickFloor)).toEqual(true);
+    expect(checkIfElevatorIsValid(shaft)).toEqual(true);
   });
 
   it("returns the valid elevator", () => {
@@ -86,7 +75,7 @@ describe("check elevator functions", () => {
       }
     ];
     const closestValidElevator = elevatorManager.getClosestValidElevator(buttonClickFloor);
-    expect(closestValidElevator).toBe(2);
+    expect(closestValidElevator).toBe(1);
   });
   
 });

@@ -9,16 +9,12 @@ export function getRandomFloors(
   );
 }
 
-export function checkIfElevatorIsValid(
-  shaft: Shaft,
-  buttonClickFloor: number
-): boolean {
-  const movingToFloorDirection = Math.sign(shaft.from - shaft.to);
-  const buttonClickDirection = Math.sign(shaft.from - buttonClickFloor);
-  if (
-    movingToFloorDirection * buttonClickDirection > 0 ||
-    shaft.from === shaft.to
-  ) {
+function shaftHasMovingElevator(shaft: Shaft) {
+  return shaft.from === shaft.to;
+}
+
+export function checkIfElevatorIsValid(shaft: Shaft): boolean {
+  if (shaftHasMovingElevator(shaft)) {
     return true;
   } else {
     return false;
