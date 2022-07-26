@@ -4,6 +4,14 @@ import axios, { AxiosResponse } from "axios";
 import FloorButtons from "./components/FloorButtons";
 import cloneDeep from "lodash/cloneDeep";
 
+export const NUMBER_OF_SHAFTS = 5;
+export const NUMBER_OF_FLOORS = 20;
+export const TIME_PER_FLOOR = 2; // Seconds
+
+// In percentage of parent element
+export const ELEVATOR_HEIGHT = 100/NUMBER_OF_FLOORS;
+export const ELEVATOR_WIDTH = 60;
+
 export type Shaft = {
   from: number;
   to: number;
@@ -18,7 +26,7 @@ const ELEVATOR_API_BASE_URL = "http://localhost:4000";
 
 async function getInitialElevatorData() {
   try {
-    return await axios.get(`${ELEVATOR_API_BASE_URL}/elevators`);
+    return await axios.post(`${ELEVATOR_API_BASE_URL}/elevators`, {data: {numberOfFloors: NUMBER_OF_FLOORS, numberOfShafts: NUMBER_OF_SHAFTS}});
   } catch {
     throw new Error("Could not fetch elevator data!");
   }

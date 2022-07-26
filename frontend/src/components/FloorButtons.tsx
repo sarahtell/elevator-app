@@ -1,14 +1,11 @@
-import { motion } from "framer-motion";
-import { Shaft } from "../App";
-import { ELEVATOR_HEIGHT, NUMBER_OF_FLOORS } from "./ElevatorShaft";
+import { ELEVATOR_HEIGHT, NUMBER_OF_FLOORS, Shaft } from "../App";
+
 
 type FloorButtonsProps = {
   buttonsClicked: boolean[];
   shafts: Shaft[];
   callElevatorToFloor: (floor: number) => void;
 };
-
-const HEIGHT = 100 - NUMBER_OF_FLOORS
 
 function hasElevatorOnTheSameFloor(shafts: Shaft[], floor: number): boolean {
   return shafts

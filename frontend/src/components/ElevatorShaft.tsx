@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ELEVATOR_HEIGHT, ELEVATOR_WIDTH, NUMBER_OF_FLOORS, TIME_PER_FLOOR } from "../App";
 
 type ElevatorShaftProps = {
   from: number;
@@ -6,13 +7,6 @@ type ElevatorShaftProps = {
   shaftIndex: number;
   elevatorIsDone: (shaft: number, floor: number) => void;
 };
-
-export const NUMBER_OF_FLOORS = 20;
-const TIME_PER_FLOOR = 2; // Seconds
-
-// In percentage of parent element
-export const ELEVATOR_HEIGHT = 100/NUMBER_OF_FLOORS;
-const ELEVATOR_WIDTH = 60;
 
 function calculateFloorPositionInPercentage(floor: number) {
   const floorsFromTop = NUMBER_OF_FLOORS - floor - 1;

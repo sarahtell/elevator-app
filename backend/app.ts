@@ -12,9 +12,10 @@ app.listen(port, () => {
   console.log(`Elevator application is running on port ${port}.`);
 });
 
-app.get("/elevators", (req, res) => {
-  elevatorManager.initialize(5, 20);
-  res.send({ shafts: elevatorManager.shafts });
+app.post("/elevators", express.json(), (req, res) => {
+  const {numberOfFloors, numberOfShafts} = req.body.data;
+  elevatorManager.initialize(numberOfShafts, numberOfFloors);
+  res.json({ shafts: elevatorManager.shafts });
 });
 
 app.post("/callElevator", express.json(), (req, res) => {
