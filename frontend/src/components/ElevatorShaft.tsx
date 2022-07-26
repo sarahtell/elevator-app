@@ -7,43 +7,41 @@ type ElevatorShaftProps = {
   elevatorIsDone: (shaft: number, floor: number) => void;
 };
 
-const NUMBER_OF_FLOORS = 20;
-const TIME_PER_FLOOR = 0.5 // Seconds
+export const NUMBER_OF_FLOORS = 20;
+const TIME_PER_FLOOR = 2; // Seconds
 
 // In percentage of parent element
-const ELEVATOR_HEIGHT = 4;
-const ELEVATOR_WIDTH = 80;
-const DISTANCE_BETWEEN_FLOORS =
-  (100 - NUMBER_OF_FLOORS * ELEVATOR_HEIGHT) / (NUMBER_OF_FLOORS + 1);
+export const ELEVATOR_HEIGHT = 100/NUMBER_OF_FLOORS;
+const ELEVATOR_WIDTH = 60;
 
 function calculateFloorPositionInPercentage(floor: number) {
   const floorsFromTop = NUMBER_OF_FLOORS - floor - 1;
   return (
-    floorsFromTop * (ELEVATOR_HEIGHT + DISTANCE_BETWEEN_FLOORS) +
-    DISTANCE_BETWEEN_FLOORS
+    floorsFromTop * ELEVATOR_HEIGHT
   );
 }
 
 function calculateDuration(floorFrom: number, floorTo: number) {
- console.log(`Floor from ${floorFrom}`, `Floor to ${floorTo}`,Math.abs(floorFrom - floorTo) * TIME_PER_FLOOR )
   return Math.abs(floorFrom - floorTo) * TIME_PER_FLOOR;
 }
 
 export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
   return (
-    <div className="relative flex flex-col w-1/5 bg-cyan-400 items-center justify-evenly">
+    <div className="relative flex flex-col w-1/5 bg-transparent items-center justify-evenly">
       {[...Array(NUMBER_OF_FLOORS)].map((_, i) => {
         return (
           // Using "style" instead of tailwind to enable dynamic css
-          <li
+          <div
             key={i}
             style={{
               height: `${ELEVATOR_HEIGHT}%`,
               width: `${ELEVATOR_WIDTH}%`,
               listStyle: "none",
-              backgroundColor: "red",
+              backgroundColor: "#034f84",
             }}
-          />
+          >
+            <div className="w-1/2 h-full border-r-2 border-dashed" />
+          </div>
         );
       })}
       <motion.li
@@ -55,16 +53,19 @@ export default function ElevatorShaft(props: ElevatorShaftProps): JSX.Element {
         }}
         transition={{
           duration: calculateDuration(props.from, props.to),
-          ease: 'linear'
+          ease: "linear",
         }}
         style={{
           height: `${ELEVATOR_HEIGHT}%`,
           width: `${ELEVATOR_WIDTH}%`,
           listStyle: "none",
-          backgroundColor: "green",
+          border: "solid 4px white",
+          backgroundColor: "#0576c6",
           position: "absolute",
         }}
-        onAnimationComplete={() => props.elevatorIsDone(props.shaftIndex, props.to)}
+        onAnimationComplete={() =>
+          props.elevatorIsDone(props.shaftIndex, props.to)
+        }
       />
     </div>
   );

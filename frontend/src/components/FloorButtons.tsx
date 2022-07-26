@@ -1,27 +1,48 @@
 import { motion } from "framer-motion";
+import { Shaft } from "../App";
+import { ELEVATOR_HEIGHT, NUMBER_OF_FLOORS } from "./ElevatorShaft";
 
 type FloorButtonsProps = {
   buttonsClicked: boolean[];
+  shafts: Shaft[];
   callElevatorToFloor: (floor: number) => void;
 };
 
-const NUMBER_OF_FLOORS = 20;
+const HEIGHT = 100 - NUMBER_OF_FLOORS
+
+function hasElevatorOnTheSameFloor(shafts: Shaft[], floor: number): boolean {
+  return shafts
+    .map((s) => {
+      if (s.from === s.to && s.from === floor) {
+        return true;
+      }
+    })
+    .includes(true);
+}
 
 export default function FloorButtons(props: FloorButtonsProps): JSX.Element {
   return (
-    <div className="relative flex flex-col w-1/5 bg-cyan-400 items-center justify-evenly">
+    <div className="relative flex flex-col bg-transparent items-center justify-evenly">
       {[...Array(NUMBER_OF_FLOORS)].map((_, i) => {
         return (
           <button
-            onClick={() => props.callElevatorToFloor(NUMBER_OF_FLOORS - i - 1)}
+            onClick={() => {
+              !hasElevatorOnTheSameFloor(
+                props.shafts,
+                NUMBER_OF_FLOORS - i - 1
+              ) && props.callElevatorToFloor(NUMBER_OF_FLOORS - i - 1);
+            }}
             key={i}
-            className={`h-6 w-6 rounded-full ${props.buttonsClicked[NUMBER_OF_FLOORS - i - 1] ? 'bg-green-500' : 'bg-pink-900'}`}
+            style={{height: `${ELEVATOR_HEIGHT*0.5}%`}}
+            className={`rounded-full active:bg-slate-500 active:border-green-500 active:border-4 aspect-square ${
+              props.buttonsClicked[NUMBER_OF_FLOORS - i - 1]
+                ? "bg-slate-500 border-green-500 border-4"
+                : "bg-slate-900"
+            }`}
           >
-            <p className="text-white">
-            {NUMBER_OF_FLOORS - i - 1}
-            </p>
+            <p className="text-white">{NUMBER_OF_FLOORS - i - 1}</p>
           </button>
-        );  
+        );
       })}
     </div>
   );

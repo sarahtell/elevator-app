@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 import FloorButtons from "./components/FloorButtons";
 import cloneDeep from "lodash/cloneDeep";
 
-type Shaft = {
+export type Shaft = {
   from: number;
   to: number;
 };
@@ -77,7 +77,6 @@ function App() {
 
     const closestShaft = response.data;
 
-    console.log(closestShaft);
     nextState.buttonsClicked[buttonClickFloor] = true;
 
     nextState.shafts[closestShaft].to = buttonClickFloor;
@@ -89,22 +88,25 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen w-full bg-gradient-to-b from-pink-200 to-teal-100">
-      <FloorButtons
-        callElevatorToFloor={callElevatorToFloor}
-        buttonsClicked={elevatorState?.buttonsClicked || []}
-      />
-      {elevatorState?.shafts.map((shaft, i) => {
-        return (
-          <ElevatorShaft
-            key={i}
-            shaftIndex={i}
-            from={shaft.from}
-            to={shaft.to}
-            elevatorIsDone={elevatorIsDone}
-          />
-        );
-      })}
+    <div className="flex h-screen w-full bg-gradient-to-b from-sky-600 to-sky-800 justify-center">
+      <div className="flex w-4/6 px-20 bg-sky-400">
+        <FloorButtons
+          callElevatorToFloor={callElevatorToFloor}
+          buttonsClicked={elevatorState?.buttonsClicked || []}
+          shafts={elevatorState.shafts}
+        />
+        {elevatorState?.shafts.map((shaft, i) => {
+          return (
+            <ElevatorShaft
+              key={i}
+              shaftIndex={i}  
+              from={shaft.from}
+              to={shaft.to}
+              elevatorIsDone={elevatorIsDone}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
