@@ -9,8 +9,8 @@ export default class ElevatorApi {
       return await axios.post(`${ELEVATOR_API_BASE_URL}/elevators`, {
         data: { numberOfFloors, numberOfShafts },
       });
-    } catch {
-      throw new Error("Could not fetch elevator data!");
+    } catch (e: any) {
+      throw new Error(e.message);
     }
   }
 
@@ -22,8 +22,8 @@ export default class ElevatorApi {
       return await axios.post(`${ELEVATOR_API_BASE_URL}/callElevator`, {
         data: { buttonClickFloor, shafts },
       });
-    } catch {
-      throw new Error("Could not request elevator!");
+    } catch (e: any) {
+      throw new Error(e.response.data.message);
     }
   }
 }
