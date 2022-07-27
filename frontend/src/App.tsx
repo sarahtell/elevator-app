@@ -1,9 +1,10 @@
+import cloneDeep from "lodash/cloneDeep";
 import { useEffect, useState } from "react";
+import Cloud from "./components/Cloud";
 import ElevatorShaft from "./components/ElevatorShaft";
 import FloorButtons from "./components/FloorButtons";
-import cloneDeep from "lodash/cloneDeep";
-import ElevatorApi from "./elevator-api";
 import Modal from "./components/Modal";
+import ElevatorApi from "./elevator-api";
 
 export const NUMBER_OF_SHAFTS = 5;
 export const NUMBER_OF_FLOORS = 20;
@@ -83,7 +84,16 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen w-full bg-gradient-to-b from-sky-600 to-sky-800 justify-center">
+    <div className="flex relative h-screen w-full bg-gradient-to-b from-sky-600 to-sky-800 justify-center">
+      <div className="relative flex flex-col-reverse justify-between items-end h-full w-1/6">
+        <div className="absolute w-1/2 top-0 left-0 aspect-square">
+          <Cloud />
+        </div>
+        <div className="absolute w-1/2 bottom-3/4 left-1/3 aspect-square">
+          <Cloud />
+        </div>
+        <div className="h-1/3 w-1/2 bg-sky-400" />
+      </div>
       <div className="flex w-4/6 px-20 bg-sky-400">
         <FloorButtons
           callElevatorToFloor={callElevatorToFloor}
@@ -102,7 +112,15 @@ function App() {
           );
         })}
       </div>
-      {hasError && <Modal errorMessage={errorMessage} setHasError={setHasError}/>}
+      <div className="relative flex flex-col-reverse justify-between items-start h-full w-1/6">
+        <div className="absolute w-1/2 top-1/3 right-1/4 aspect-square">
+          <Cloud />
+        </div>
+        <div className="h-1/3 w-1/2 bg-sky-400" />
+      </div>
+      {hasError && (
+        <Modal errorMessage={errorMessage} setHasError={setHasError} />
+      )}
       );
     </div>
   );
