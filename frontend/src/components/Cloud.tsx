@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export default function Cloud() {
   return (
     <svg
@@ -5,7 +7,10 @@ export default function Cloud() {
       viewBox="0 0 72 72"
       xmlSpace="preserve"
     >
-      <path
+      <motion.path
+        animate={{ translateX: 2, translateY: 1, scale: 0.9, fill: "#d8d8d8" }}
+        initial={{ fill: "#fff" }}
+        transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
         fill="#fff"
         stroke="#000"
         strokeWidth={1}
