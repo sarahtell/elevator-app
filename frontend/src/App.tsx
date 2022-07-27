@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import ElevatorShaft from "./components/ElevatorShaft";
-import axios, { AxiosResponse } from "axios";
 import FloorButtons from "./components/FloorButtons";
 import cloneDeep from "lodash/cloneDeep";
+import ElevatorApi from "./elevator-api";
 
 export const NUMBER_OF_SHAFTS = 5;
 export const NUMBER_OF_FLOORS = 20;
@@ -22,45 +22,22 @@ type ElevatorState = {
   buttonsClicked: boolean[];
 };
 
-const ELEVATOR_API_BASE_URL = "http://localhost:4000";
-
-async function getInitialElevatorData() {
-  try {
-    return await axios.post(`${ELEVATOR_API_BASE_URL}/elevators`, {data: {numberOfFloors: NUMBER_OF_FLOORS, numberOfShafts: NUMBER_OF_SHAFTS}});
-  } catch {
-    throw new Error("Could not fetch elevator data!");
-  }
-}
-
-async function requestElevator(
-  buttonClickFloor: number,
-  shafts: Shaft[]
-): Promise<AxiosResponse<number, any>> {
-  try {
-    return await axios.post(`${ELEVATOR_API_BASE_URL}/callElevator`, {
-      data: { buttonClickFloor, shafts },
-    });
-  } catch {
-    throw new Error("Could not request elevator!");
-  }
-}
-
 function App() {
+  const elevatorApi = new ElevatorApi();
   const [elevatorState, setElevatorState] = useState<ElevatorState>({
     shafts: [],
-    buttonsClicked: new Array(20).fill(false),
+    buttonsClicked: new Array(NUMBER_OF_FLOORS).fill(false),
   });
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getInitialElevatorData().then((res) => {
+    elevatorApi.getInitialElevatorData(NUMBER_OF_FLOORS, NUMBER_OF_SHAFTS).then((res) => {
       setElevatorState({ ...elevatorState, shafts: res.data.shafts });
     });
     setLoading(false);
   }, []);
 
   function elevatorIsDone(shaft: number, floor: number) {
-    // TODO: update state when an elevator has reached its destination.
     const nextState = cloneDeep(elevatorState);
 
     if (!nextState) {
@@ -80,7 +57,7 @@ function App() {
       throw new Error("State is undefined!");
     }
 
-    const response = await requestElevator(buttonClickFloor, nextState.shafts);
+    const response = await elevatorApi.requestElevator(buttonClickFloor, nextState.shafts);
 
     const closestShaft = response.data;
 

@@ -9,12 +9,12 @@ export function getRandomFloors(
   );
 }
 
-function shaftHasMovingElevator(shaft: Shaft) {
+function shaftHasNotMovingElevator(shaft: Shaft) {
   return shaft.from === shaft.to;
 }
 
 export function checkIfElevatorIsValid(shaft: Shaft): boolean {
-  if (shaftHasMovingElevator(shaft)) {
+  if (shaftHasNotMovingElevator(shaft)) {
     return true;
   } else {
     return false;
