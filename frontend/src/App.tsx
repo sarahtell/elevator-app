@@ -89,7 +89,6 @@ function App() {
           callElevatorToFloor={callElevatorToFloor}
           buttonsClicked={elevatorState?.buttonsClicked || []}
           shafts={elevatorState.shafts}
-          hasRateLimitError={hasError}
         />
         {elevatorState?.shafts.map((shaft, i) => {
           return (
@@ -103,9 +102,7 @@ function App() {
           );
         })}
       </div>
-      {hasError && (
-        <Modal errorMessage={errorMessage} setHasError={setHasError} />
-      )}
+      {hasError && <Modal errorMessage={errorMessage} setHasError={setHasError}/>}
       );
     </div>
   );

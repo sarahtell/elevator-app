@@ -8,7 +8,6 @@ import {
 type FloorButtonsProps = {
   buttonsClicked: boolean[];
   shafts: Shaft[];
-  hasRateLimitError: boolean;
   callElevatorToFloor: (floor: number) => void;
 };
 
@@ -22,6 +21,11 @@ function hasElevatorOnTheSameFloor(shafts: Shaft[], floor: number): boolean {
     .includes(true);
 }
 
+function hasNoAvailableElevator(buttonsClicked: boolean[]): boolean {
+  const numberOfButtonsClicked = buttonsClicked.filter(Boolean).length;
+  return numberOfButtonsClicked === NUMBER_OF_SHAFTS;
+}
+
 function buttonIsClicked(
   buttonClicked: number,
   buttonsClicked: boolean[]
@@ -31,11 +35,11 @@ function buttonIsClicked(
 
 function getButtonStyle(
   buttonIsClicked: boolean,
-  hasRateLimitError: boolean
+  hasNoAvailableElevator: boolean
 ): string {
   if (buttonIsClicked) {
     return "bg-slate-500 border-green-500 border-4";
-  } else if (hasRateLimitError) {
+  } else if (hasNoAvailableElevator) {
     return "bg-slate-500 border-red-500 border-4";
   } else {
     return "bg-slate-900";
@@ -55,13 +59,12 @@ export default function FloorButtons(props: FloorButtonsProps): JSX.Element {
             }}
             key={i}
             disabled={
-              buttonIsClicked(buttonClicked, props.buttonsClicked) ||
-              props.hasRateLimitError
+              buttonIsClicked(buttonClicked, props.buttonsClicked)
             }
             style={{ height: `${ELEVATOR_HEIGHT * 0.5}%` }}
             className={`rounded-full active:bg-slate-500 active:border-green-500 active:border-4 aspect-square ${getButtonStyle(
               buttonIsClicked(buttonClicked, props.buttonsClicked),
-              props.hasRateLimitError
+              hasNoAvailableElevator(props.buttonsClicked)
             )}`}
           >
             <p className="text-white">{buttonClicked}</p>
