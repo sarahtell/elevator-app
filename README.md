@@ -1,5 +1,7 @@
 # ELEVATOR SYSTEM
 
+![elevator system](./elevator-app.png)
+
 ## Table of contents
 * [General information](#general-info)
 * [Technologies](#technologies)
