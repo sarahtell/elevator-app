@@ -9,7 +9,7 @@
 * [Features](#features)
 * [Delimitations](#delimitations)
 
-## General info
+## General information
 Creates an application that is able to control an elevator system by calling an elevator to a certain floor. 
 The route of the elevators are animated and visualized.
 
