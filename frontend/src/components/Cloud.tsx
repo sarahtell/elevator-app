@@ -8,7 +8,7 @@ export default function Cloud() {
       xmlSpace="preserve"
     >
       <motion.path
-        animate={{ translateX: 2, translateY: 1, scale: 0.9, fill: "#d8d8d8" }}
+        animate={{ translateX: Math.random() * 10, translateY: Math.random() * 10, scale: 0.9, fill: "#d8d8d8" }}
         initial={{ fill: "#fff" }}
         transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
         fill="#fff"

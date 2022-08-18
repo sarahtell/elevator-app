@@ -59,7 +59,7 @@ function App() {
 
   async function callElevatorToFloor(buttonClickFloor: number) {
     const nextState = cloneDeep(elevatorState);
-
+    
     if (!nextState) {
       throw new Error("State is undefined!");
     }

@@ -61,7 +61,7 @@ export default function FloorButtons(props: FloorButtonsProps): JSX.Element {
             disabled={
               buttonIsClicked(buttonClicked, props.buttonsClicked)
             }
-            style={{ height: `${ELEVATOR_HEIGHT * 0.5}%` }}
+            style={{ height: `${ELEVATOR_HEIGHT * 0.9}%` }}
             className={`rounded-full active:bg-slate-500 active:border-green-500 active:border-4 aspect-square ${getButtonStyle(
               buttonIsClicked(buttonClicked, props.buttonsClicked),
               hasNoAvailableElevator(props.buttonsClicked)
